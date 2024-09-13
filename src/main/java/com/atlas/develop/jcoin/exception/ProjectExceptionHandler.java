@@ -32,7 +32,7 @@ public class ProjectExceptionHandler {
     public ResponseEntity<ErrorEntity> runtimeExceptionHandler(RuntimeException exception) {
         ErrorEntity error = new ErrorEntity.Builder()
                 .withTimeStamp(LocalDateTime.now())
-                .withMessage("toto")
+                .withMessage(exception.getMessage())
                 .withHttpStatus(HttpStatus.FORBIDDEN.value())
                 .build();
 
