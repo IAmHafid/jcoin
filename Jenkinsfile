@@ -52,17 +52,15 @@ pipeline {
             // Générer un rapport de test JUnit basé sur les résultats des tests Gradle
             junit '**/build/test-results/test/*.xml'
         }
-        post {
-            success {
-                mail to: 'hafid.meliani@pm.me',
-                     subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "The build was successful! Check it out at ${env.BUILD_URL}"
-            }
-            failure {
-                mail to: 'hafid.meliani@pm.me',
-                     subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                     body: "The build has failed. Check the details at ${env.BUILD_URL}"
-            }
+        success {
+            mail to: 'hafid.meliani@pm.me',
+                 subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "The build was successful! Check it out at ${env.BUILD_URL}"
+        }
+        failure {
+            mail to: 'hafid.meliani@pm.me',
+                 subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                 body: "The build has failed. Check the details at ${env.BUILD_URL}"
         }
     }
 }
