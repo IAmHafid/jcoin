@@ -30,7 +30,7 @@ pipeline {
                     echo 'exécution des tests'
                     sh './gradlew test'
                 }
-            ]
+            }
         }
 
         stage('Emballer') {
