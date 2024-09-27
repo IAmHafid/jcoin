@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    triggers {
+        cron('10 * * * *')  // Déclenche le build toutes les heures à 10 minutes après l'heure
+    }
+
     tools {
         jdk 'JDK_17'
     }
@@ -48,11 +52,17 @@ pipeline {
             // Générer un rapport de test JUnit basé sur les résultats des tests Gradle
             junit '**/build/test-results/test/*.xml'
         }
-        success {
-            echo 'Le pipeline Gradle a terminé avec succès !'
-        }
-        failure {
-            echo 'Le pipeline Gradle a échoué.'
+        post {
+            success {
+                mail to: 'hafid.meliani@pm.me',
+                     subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "The build was successful! Check it out at ${env.BUILD_URL}"
+            }
+            failure {
+                mail to: 'hafid.meliani@pm.me',
+                     subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                     body: "The build has failed. Check the details at ${env.BUILD_URL}"
+            }
         }
     }
 }
