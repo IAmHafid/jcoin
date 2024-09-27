@@ -12,23 +12,25 @@ pipeline {
     stages {
         stage('Cloner le dépôt') {
             steps {
-                // Cloner le projet depuis le dépôt Git
+                echo 'Cloner le projet depuis le dépôt Git'
                 git 'https://github.com/IAmHafid/jcoin.git'
             }
         }
 
         stage('Compiler') {
             steps {
-                // Utilisation du Gradle Wrapper pour nettoyer et compiler le projet
+                echo 'Utilisation du Gradle Wrapper pour nettoyer et compiler le projet'
                 sh './gradlew clean build'
             }
         }
 
         stage('Tests unitaires') {
             steps {
-                // Utilisation du Gradle Wrapper pour exécuter les tests
-                sh './gradlew test'
-            }
+                node {
+                    echo 'exécution des tests'
+                    sh './gradlew test'
+                }
+            ]
         }
 
         stage('Emballer') {
