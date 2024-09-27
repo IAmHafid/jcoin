@@ -26,10 +26,8 @@ pipeline {
 
         stage('Tests unitaires') {
             steps {
-                node {
-                    echo 'exécution des tests'
-                    sh './gradlew test'
-                }
+                echo 'exécution des tests'
+                sh './gradlew test'
             }
         }
 
