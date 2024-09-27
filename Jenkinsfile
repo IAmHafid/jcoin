@@ -5,8 +5,8 @@ pipeline {
         cron('10 * * * *')  // Déclenche le build toutes les heures à 10 minutes après l'heure
     }
 
-    tools {
-        jdk 'JDK_9'
+    environment {
+        PATH = "${JAVA_HOME}/bin:${PATH}"  // Met à jour le PATH pour inclure le répertoire bin du JDK
     }
 
     stages {
