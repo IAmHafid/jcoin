@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'JDK_17'
+    }
+
+    stages {
+        stage('Cloner le dépôt') {
+            steps {
+                // Cloner le projet depuis le dépôt Git
+                git 'https://github.com/IAmHafid/jcoin.git'
+            }
+        }
+
+        stage('Compiler') {
+            steps {
+                // Utilisation du Gradle Wrapper pour nettoyer et compiler le projet
+                sh './gradlew clean build'
+            }
+        }
+
+        stage('Tests unitaires') {
+            steps {
+                // Utilisation du Gradle Wrapper pour exécuter les tests
+                sh './gradlew test'
+            }
+        }
+
+        stage('Emballer') {
+            steps {
+                // Utilisation du Gradle Wrapper pour assembler le projet
+                sh './gradlew assemble'
+            }
+        }
+
+        /* stage('Déployer') {
+            steps {
+                // Déployer l'artefact (ex: via SCP, Docker, ou un autre outil de déploiement)
+                echo 'Déploiement de l\'application sur l\'environnement de test...'
+                sh 'scp build/libs *//*.jar user@server:/path/to/deploy'
+            }
+        } */
+    }
+
+    post {
+        always {
+            // Générer un rapport de test JUnit basé sur les résultats des tests Gradle
+            junit '**/build/test-results/test/*.xml'
+        }
+        success {
+            echo 'Le pipeline Gradle a terminé avec succès !'
+        }
+        failure {
+            echo 'Le pipeline Gradle a échoué.'
+        }
+    }
+}
