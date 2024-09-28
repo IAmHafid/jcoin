@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('15 23 * * *')  // Déclenche le build toutes les jours à 23h15
+        cron('25 23 * * *')  // Déclenche le build toutes les jours à 23h15
     }
 
     environment {
@@ -64,7 +64,7 @@ pipeline {
                 """,
                 to: 'hafid.meliani@pm.me',
                 compressLog: true,
-                attachments: '**/target/surefire-reports/*.xml'
+                attachment: '**/target/surefire-reports/*.xml' // Joindre les rapports JUnit
             )
         }
     }
