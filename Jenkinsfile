@@ -1,9 +1,5 @@
 pipeline {
-    agent any
-
-    triggers {
-        cron('25 23 * * *')  // Déclenche le build toutes les jours à 23h15
-    }
+    agent Smith
 
     environment {
         PATH = "${JAVA_HOME}/bin:${PATH}"  // Met à jour le PATH pour inclure le répertoire bin du JDK
