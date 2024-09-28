@@ -1,5 +1,7 @@
 pipeline {
-    agent Smith
+    agent {
+        label 'Smith'
+    }
 
     environment {
         PATH = "${JAVA_HOME}/bin:${PATH}"  // Met à jour le PATH pour inclure le répertoire bin du JDK
