@@ -50,20 +50,19 @@ pipeline {
             // Générer un rapport de test JUnit basé sur les résultats des tests Gradle
             junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
 
-
             emailext(
                 subject: "Build ${currentBuild.fullDisplayName} - Test Results",
                 body: """
                     Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.currentResult}.
                     Test summary:
-                    Passed: ${currentBuild.testResult.totalPassed}
-                    Failed: ${currentBuild.testResult.totalFailed}
-                    Skipped: ${currentBuild.testResult.totalSkipped}
+                    Passed: ${currentBuild.testResult?.totalPassed ?: 'N/A'}
+                    Failed: ${currentBuild.testResult?.totalFailed ?: 'N/A'}
+                    Skipped: ${currentBuild.testResult?.totalSkipped ?: 'N/A'}
                     Full details at: ${env.BUILD_URL}
                 """,
                 to: 'hafid.meliani@pm.me',
                 compressLog: true,
-                attachments: '**/target/surefire-reports/*.xml' // Joindre les rapports JUnit
+                attachments: '**/build/test-results/test/*.xml' // Joindre les rapports JUnit
             )
         }
     }
