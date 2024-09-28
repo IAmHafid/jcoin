@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('10 * * * *')  // Déclenche le build toutes les heures à 10 minutes après l'heure
+        cron('0 23 * * *')  // Déclenche le build toutes les heures à 10 minutes après l'heure
     }
 
     environment {
@@ -55,7 +55,16 @@ pipeline {
         success {
             mail to: 'hafid.meliani@pm.me',
                  subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "The build was successful! Check it out at ${env.BUILD_URL}"
+                 body: """
+                     Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.currentResult}.
+                     Test summary:
+                     Passed: ${currentBuild.testResult.totalPassed}
+                     Failed: ${currentBuild.testResult.totalFailed}
+                     Skipped: ${currentBuild.testResult.totalSkipped}
+                     Full details at: ${env.BUILD_URL}
+                 """,
+                 attachLog: true,  // Joindre les logs du build
+                 attachmentsPattern: '**/target/surefire-reports/*.xml' // Joindre les rapports JUnit
         }
         failure {
             mail to: 'hafid.meliani@pm.me',
