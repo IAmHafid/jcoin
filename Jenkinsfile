@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     triggers {
-        cron('0 23 * * *')  // Déclenche le build toutes les heures à 10 minutes après l'heure
+        cron('15 23 * * *')  // Déclenche le build toutes les jours à 23h15
     }
 
     environment {
@@ -51,25 +51,21 @@ pipeline {
         always {
             // Générer un rapport de test JUnit basé sur les résultats des tests Gradle
             junit '**/build/test-results/test/*.xml'
-        }
-        success {
-            mail to: 'hafid.meliani@pm.me',
-                 subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: """
-                     Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.currentResult}.
-                     Test summary:
-                     Passed: ${currentBuild.testResult.totalPassed}
-                     Failed: ${currentBuild.testResult.totalFailed}
-                     Skipped: ${currentBuild.testResult.totalSkipped}
-                     Full details at: ${env.BUILD_URL}
-                 """,
-                 attachLog: true,  // Joindre les logs du build
-                 attachmentsPattern: '**/target/surefire-reports/*.xml' // Joindre les rapports JUnit
-        }
-        failure {
-            mail to: 'hafid.meliani@pm.me',
-                 subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                 body: "The build has failed. Check the details at ${env.BUILD_URL}"
+
+            emailext(
+                subject: "Build ${currentBuild.fullDisplayName} - Test Results",
+                body: """
+                    Build ${currentBuild.fullDisplayName} finished with status: ${currentBuild.currentResult}.
+                    Test summary:
+                    Passed: ${currentBuild.testResult.totalPassed}
+                    Failed: ${currentBuild.testResult.totalFailed}
+                    Skipped: ${currentBuild.testResult.totalSkipped}
+                    Full details at: ${env.BUILD_URL}
+                """,
+                to: 'hafid.meliani@pm.me',
+                compressLog: true,
+                attachments: '**/target/surefire-reports/*.xml'
+            )
         }
     }
 }
