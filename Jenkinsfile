@@ -62,7 +62,7 @@ pipeline {
                 """,
                 to: 'hafid.meliani@pm.me',
                 compressLog: true,
-                attachments: '**/build/test-results/test/*.xml' // Joindre les rapports JUnit
+                attachment: '**/build/test-results/test/*.xml' // Joindre les rapports JUnit
             )
         }
     }
