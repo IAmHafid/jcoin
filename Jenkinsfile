@@ -62,7 +62,7 @@ pipeline {
                 """,
                 to: 'hafid.meliani@pm.me',
                 compressLog: true,
-                attachment: '**/target/surefire-reports/*.xml' // Joindre les rapports JUnit
+                attachments: '**/target/surefire-reports/*.xml' // Joindre les rapports JUnit
             )
         }
     }
