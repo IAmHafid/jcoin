@@ -48,7 +48,8 @@ pipeline {
     post {
         always {
             // Générer un rapport de test JUnit basé sur les résultats des tests Gradle
-            junit '**/build/test-results/test/*.xml'
+            junit allowEmptyResults: true, testResults: '**/build/test-results/test/*.xml'
+
 
             emailext(
                 subject: "Build ${currentBuild.fullDisplayName} - Test Results",
